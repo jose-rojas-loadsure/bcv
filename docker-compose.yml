@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    working_dir: "/usr/src/app"
+    command: sh -c "while :; do python src/bcv.py; inotifywait -r -e modify,attrib,close_write,move,create,delete .; done"
+    restart: on-failure:5
+    environment:
+      - LANG=C.UTF-8
